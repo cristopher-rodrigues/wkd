@@ -1,0 +1,103 @@
+extends layout
+
+block content
+  h1 Daily Work
+
+  div(style="display: flex;flex-direction: row;")
+    div(style="width: 40%")
+      table
+        thead
+          tr
+            th ID
+            th Category
+            th Description
+            th StartedAt
+            th FinishedAt
+        tbody
+          each task in tasks
+            tr
+              td
+                p=task.id
+              td
+                p=task.category
+              td
+                p=task.description
+              td
+                p=new Date(task.started_at).toLocaleString()
+              td
+                p=new Date(task.finished_at).toLocaleString()
+
+    div(style="width: 60%")
+      canvas#canvas
+
+  script(src="https://www.chartjs.org/dist/2.8.0/Chart.min.js")
+
+  script.
+    const tasksAgg = JSON.parse('!{JSON.stringify(tasksAgg)}');
+
+    let labels = [];
+    const datasets = [];
+    const dynamicColors = () => {
+      const r = Math.floor(Math.random() * 255);
+      const g = Math.floor(Math.random() * 255);
+      const b = Math.floor(Math.random() * 255);
+      return "rgb(" + r + "," + g + "," + b + ")";
+    }
+
+    const dt = {};
+
+    tasksAgg.forEach((task) => {
+      labels.push(task.date);
+
+      if (!dt[task.category]) dt[task.category] = {};
+
+      dt[task.category][task.date] = task.expended_minutes;
+    });
+
+    labels = labels.filter((elem, pos, arr) => (arr.indexOf(elem) == pos));
+
+    Object.keys(dt).forEach((k) => {
+      const data = [];
+
+      labels.forEach((lb, kk) => {
+        data[kk] = dt[k][lb] || 0;
+      });
+
+      datasets.push({
+        label: k,
+        backgroundColor: dynamicColors(),
+        data
+      });
+    });
+
+    const barChartData = {
+    	labels,
+    	datasets,
+    };
+
+    window.onload = function() {
+    	const ctx = document.getElementById('canvas').getContext('2d');
+    	window.myBar = new Chart(ctx, {
+    		type: 'bar',
+    		data: barChartData,
+    		options: {
+    			title: {
+    				display: true,
+    				text: 'Expended minutes per task category'
+    			},
+    			tooltips: {
+    				mode: 'index',
+    				intersect: false
+    			},
+    			responsive: true,
+    			scales: {
+    				xAxes: [{
+    					stacked: true,
+    				}],
+    				yAxes: [{
+    					stacked: true
+    				}]
+    			}
+    		}
+    	});
+    };
