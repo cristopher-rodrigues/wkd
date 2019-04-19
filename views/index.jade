@@ -5,28 +5,36 @@ block content
 
   div(style="display: flex;flex-direction: row;")
     div(style="width: 40%")
-      table
-        thead
-          tr
-            th ID
-            th Category
-            th Description
-            th StartedAt
-            th FinishedAt
-        tbody
-          each task in tasks
+      div(style="max-height: 40%; overflow-y: scroll;")
+        table
+          thead
             tr
-              td
-                p=task.id
-              td
-                p=task.category
-              td
-                p=task.description
-              td
-                p=new Date(task.started_at).toLocaleString()
-              td
-                p=new Date(task.finished_at).toLocaleString()
+              th ID
+              th Category
+              th Description
+              th StartedAt
+              th FinishedAt
+          tbody
+            each task in tasks
+              tr
+                td
+                  p=task.id
+                td
+                  p=task.category
+                td
+                  p=task.description
+                td
+                  p=new Date(task.started_at).toLocaleString()
+                td
+                  p=new Date(task.finished_at).toLocaleString()
 
+      form(method="post" action="/add-task" novalidate)
+        input(name="category" placeholder="category")
+        input(name="description" placeholder="description")
+        input(name="started_at" placeholder="started_at")
+        input(name="finished_at" placeholder="finished_at")
+        button(id="xablau" type="submit") Add Task
+        
     div(style="width: 60%")
       canvas#canvas
 

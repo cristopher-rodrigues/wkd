@@ -3,7 +3,7 @@ const express = require('express');
 const Sequelize = require('sequelize');
 
 const router = express.Router();
-const sequelize = new Sequelize('postgres://user:pass@localhost:5432/db');
+const sequelize = new Sequelize('postgres://wkd:password@localhost:5432/wkd');
 
 class Tasks extends Sequelize.Model {}
 
@@ -11,8 +11,33 @@ Tasks.init({
   category: Sequelize.STRING,
   description: Sequelize.TEXT,
   started_at: Sequelize.DATE,
-  finished_at: Sequelize.DATE
+  finished_at: Sequelize.DATE,
+  createdAt: {
+     field: 'created_at',
+     type: Sequelize.DATE,
+   },
+   updatedAt: {
+     field: 'updated_at',
+     type: Sequelize.DATE,
+   },
 }, { sequelize, modelName: 'task' });
+
+router.post('/add-task', function(req, res, next){
+  Tasks
+    .create({
+      createdAt: new Date(),
+      category: req.body.category,
+      description: req.body.description,
+      started_at: new Date(req.body.started_at),
+      finished_at: new Date(req.body.finished_at)
+    }).then(function() {
+        res.redirect('/');
+    })
+    .catch(function(err) {
+        // print the error details
+        console.log(err);
+    });
+});
 
 router.get('/', function(req, res, next) {
   sequelize

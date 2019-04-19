@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "wkd",
+    "password": "password",
+    "database": "wkd",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "wkd",
+    "password": "password",
+    "database": "wkd",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "wkd",
+    "password": "password",
+    "database": "wkd",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
