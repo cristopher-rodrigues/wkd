@@ -3,7 +3,7 @@ const express = require('express');
 const Sequelize = require('sequelize');
 
 const router = express.Router();
-const sequelize = new Sequelize('postgres://wkd:password@localhost:5432/wkd');
+const sequelize = new Sequelize('postgres://wkd:wkd@localhost:5432/wkd');
 
 class Tasks extends Sequelize.Model {}
 
