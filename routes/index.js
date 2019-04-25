@@ -3,7 +3,13 @@ const express = require('express');
 const Sequelize = require('sequelize');
 
 const router = express.Router();
-const sequelize = new Sequelize('postgres://wkd:wkd@localhost:5432/wkd');
+const database = process.env.DATABASE;
+const databaseHost = process.env.DATABASE_HOST;
+const databasePort = process.env.DATABASE_PORT;
+const databaseUser = process.env.DATABASE_USER;
+const databasePassword = process.env.DATABASE_PASSWORD;
+const databaseURI = `postgres://${databaseUser}:${databasePassword}@${databaseHost}:${databasePort}/${database}`;
+const sequelize = new Sequelize(databaseURI);
 
 class Tasks extends Sequelize.Model {}
 
