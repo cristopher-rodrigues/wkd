@@ -4,8 +4,8 @@ block content
   h1 Daily Work
 
   div(style="display: flex;flex-direction: row;")
-    div(style="width: 40%")
-      div(style="max-height: 40%; overflow-y: scroll;")
+    div(style="width: 40%;height: 55vh;")
+      div(style="max-height: 100%; overflow-y: scroll;")
         table
           thead
             tr
@@ -28,16 +28,32 @@ block content
                 td
                   p=new Date(task.finished_at).toLocaleString()
 
-      form(method="post" action="/add-task" novalidate)
-        input(name="category" placeholder="category")
-        input(name="description" placeholder="description")
-        input(name="started_at" placeholder="started_at")
-        input(name="finished_at" placeholder="finished_at")
-        button(id="xablau" type="submit") Add Task
-        
     div(style="width: 60%")
       canvas#canvas
-
+  
+  div(style="width: 50%")    
+    form(method="post" action="/add-task" novalidate)
+      div(style="display: flex;flex-direction: row;flex-flow: wrap")
+        div
+          label(for="category") Category
+          div(id="category")
+            input(name="category" placeholder="category")
+        div
+          label(for="description") Description
+          div(id="description")
+            input(name="description" placeholder="description")
+        div
+          label(for="start") Started at
+          div(id="start")
+            input(name="started_at_date" type="date")
+            input(name="started_at_time" type="time")
+        div
+          label(for="finished") Finished at
+          div(id="finished")
+            input(name="finished_at_date" type="date")
+            input(name="finished_at_time" type="time")
+      button(type="submit") Add Task
+        
   script(src="https://www.chartjs.org/dist/2.8.0/Chart.min.js")
 
   script.
@@ -91,7 +107,7 @@ block content
     		options: {
     			title: {
     				display: true,
-    				text: 'Expended minutes per task category'
+    				text: 'Spent minutes per task category'
     			},
     			tooltips: {
     				mode: 'index',

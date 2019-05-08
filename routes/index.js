@@ -29,13 +29,16 @@ Tasks.init({
 }, { sequelize, modelName: 'task' });
 
 router.post('/add-task', function(req, res, next){
+  const started_at = new Date(`${req.body.started_at_date} ${req.body.started_at_time}`);
+  const finished_at = new Date(`${req.body.finished_at_date} ${req.body.finished_at_time}`);
+
   Tasks
     .create({
       createdAt: new Date(),
       category: req.body.category,
       description: req.body.description,
-      started_at: new Date(req.body.started_at),
-      finished_at: new Date(req.body.finished_at)
+      started_at,
+      finished_at
     }).then(function() {
         res.redirect('/');
     })
@@ -49,7 +52,7 @@ router.get('/', function(req, res, next) {
   sequelize
     .query(`
       select
-      sum(extract (epoch from (finished_at - started_at))::integer/60) expended_minutes, to_char(finished_at, 'DD-MM') date, category
+      sum(extract (epoch from (finished_at - started_at))::integer/60) expended_minutes, to_char(finished_at, 'MM-DD') date, category
       from tasks
       group by date, category
       order by date asc
