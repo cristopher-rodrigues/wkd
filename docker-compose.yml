@@ -1,0 +1,23 @@
+version: "3"
+services:
+  app:
+    build: .
+    depends_on:
+      - postgres-wkd
+    ports:
+      - "3000:3000"
+      - "5432:5432"
+    environment:
+      DATABASE_PASSWORD: wkd
+      DATABASE: wkd
+      DATABASE_HOST: postgres-wkd
+      DATABASE_PORT: 5432
+      DATABASE_USER: wkd
+      BASIC_AUTH_LOGIN: wkd
+      BASIC_AUTH_PASSWORD: wkd
+  postgres-wkd:
+    image: postgres:11.2-alpine
+    environment:
+      POSTGRES_USER: wkd
+      POSTGRES_PASSWORD: wkd
+      POSTGRES_DB: wkd
